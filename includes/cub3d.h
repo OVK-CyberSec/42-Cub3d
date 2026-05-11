@@ -28,7 +28,7 @@
 # include <unistd.h>
 # include <X11/keysym.h>
 # include <X11/X.h>
-
+# include "cub/cub.h"
 
 # define ERR_USAGE "usage: ./cub3d <path/to/map.cub>"
 
