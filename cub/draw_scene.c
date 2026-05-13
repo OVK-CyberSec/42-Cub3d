@@ -1,23 +1,22 @@
 #include "cub.h"
 
 
-int     get_tex_x(t_hit hit, t_tex *tex, double ray_angle)
+int get_tex_x(t_hit hit, t_tex *tex, double ray_angle)
 {
     double  wall_x;
     int     tex_x;
 
-    if (fabs(cos(ray_angle)) > fabs(sin(ray_angle)))
+    if (hit.hit_side == 0)
         wall_x = hit.hit_y;
     else
         wall_x = hit.hit_x;
     wall_x -= floor(wall_x);
     tex_x = (int)(wall_x * tex->width);
-    if (cos(ray_angle) < 0)
+    if (hit.hit_side == 0 && cos(ray_angle) > 0)
         tex_x = tex->width - tex_x - 1;
-    if (tex_x < 0)
-        tex_x = 0;
-    if (tex_x >= tex->width)
-        tex_x = tex->width - 1;
+
+    if (hit.hit_side == 1 && sin(ray_angle) < 0)
+        tex_x = tex->width - tex_x - 1;
     return (tex_x);
 }
 
