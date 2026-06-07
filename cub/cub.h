@@ -8,6 +8,7 @@
 # include "minilibx-linux/mlx.h"
 
 # define PI 3.14159265358979323846
+# define MARGIN 0.2
 
 typedef struct s_tex
 {
