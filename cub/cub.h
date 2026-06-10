@@ -4,11 +4,22 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <math.h>
+# include "get_next_line.h"
 # include "minilibx-linux/mlx_int.h"
 # include "minilibx-linux/mlx.h"
 
 # define PI 3.14159265358979323846
 # define MARGIN 0.2
+
+typedef struct s_minfo
+{
+	char	*path_north;
+	char	*path_south;
+	char	*path_east;
+	char	*path_west;
+	int		ground_color;
+	int		ceiling_color;
+} t_minfo ;
 
 typedef struct s_tex
 {
@@ -38,14 +49,15 @@ typedef struct s_data
     int     bits_per_pixel;
     int     line_length;
     int     endian;
-    char *addr_no;
-    char *addr_so;
-    char *addr_we;
-    char *addr_ea;
-    t_tex tex_no;
-    t_tex tex_so;
-    t_tex tex_we;
-    t_tex tex_ea;
+    char 	*addr_no;
+    char 	*addr_so;
+    char 	*addr_we;
+    char 	*addr_ea;
+    t_tex 	tex_no;
+    t_tex 	tex_so;
+    t_tex 	tex_we;
+    t_tex 	tex_ea;
+	t_minfo	paths;
 }   t_data;
 
 
@@ -93,6 +105,9 @@ typedef struct s_rayctx
     t_column   col;
 }   t_rayctx;
 
+
+t_minfo	catch_path();
+char	**ft_split(char *s, char c);
 int     init_game_struct(t_data *data);
 int     close_window(void *param);
 int     render(void *param);

@@ -42,7 +42,7 @@ void draw_column(t_data *d, t_column *col)
     {
         if (y < col->start || y > col->end)
         {
-            put_pixel(d, col->x, y, (y < col->start) ? 0x87CEEB : 0x444444);
+            put_pixel(d, col->x, y, (y < col->start) ? d->paths.ceiling_color : d->paths.ground_color);
         }
         else
         {
