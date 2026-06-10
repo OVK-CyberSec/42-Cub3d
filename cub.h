@@ -1,25 +1,85 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mohifdi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/10 16:54:31 by mohifdi           #+#    #+#             */
+/*   Updated: 2026/06/10 17:00:35 by mohifdi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB_H
 # define CUB_H
 
 # include <unistd.h>
 # include <stdio.h>
 # include <math.h>
-#include  <string.h>
+# include  <string.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <string.h>
+# include <unistd.h>
+
 # include "./minilibx-linux/mlx.h"
-#include <stdlib.h>
+# include <stdlib.h>
 # define PI 3.14159265358979323846
 # define MARGIN 0.2
+# define WIN_W      640
+# define WIN_H      360
+# define ERR_USAGE        "usage: ./cub3d <path/to/map.cub>"
+# define ERR_FILE_NOT_CUB "Not a .cub file"
+# define ERR_FILE_NOT_XPM "Not an .xpm file"
+# define ERR_FILE_IS_DIR  "Is a directory"
+# define ERR_FLOOR_CEILING   "Invalid floor/ceiling RGB color(s)"
+# define ERR_COLOR_FLOOR     "Invalid floor RGB color"
+# define ERR_COLOR_CEILING   "Invalid ceiling RGB color"
+# define ERR_INVALID_MAP     "Map description is either wrong or incomplete"
+# define ERR_INV_LETTER      "Invalid character in map"
+# define ERR_NUM_PLAYER      "Map has more than one player"
+# define ERR_TEX_RGB_VAL     "Invalid RGB value (min: 0, max: 255)"
+# define ERR_TEX_MISSING     "Missing texture(s)"
+# define ERR_TEX_INVALID     "Invalid texture(s)"
+# define ERR_COLOR_MISSING   "Missing color(s)"
+# define ERR_MAP_MISSING     "Missing map"
+# define ERR_MAP_TOO_SMALL   "Map is not at least 3 lines high"
+# define ERR_MAP_NO_WALLS    "Map is not surrounded by walls"
+# define ERR_MAP_LAST        "Map is not the last element in file"
+# define ERR_PLAYER_POS      "Invalid player position"
+# define ERR_PLAYER_DIR      "Map has no player position(expected N,S E or W)"
+# define ERR_MALLOC          "Could not allocate memory"
+# define ERR_MLX_START       "Could not start mlx"
+# define ERR_MLX_WIN         "Could not create mlx window"
+# define ERR_MLX_IMG         "Could not create mlx image"
+
+typedef struct s_config
+{
+	char	*tex_no;
+	char	*tex_so;
+	char	*tex_we;
+	char	*tex_ea;
+	int		floor_r;
+	int		floor_g;
+	int		floor_b;
+	int		ceil_r;
+	int		ceil_g;
+	int		ceil_b;
+	char	**map;
+	int		map_height;
+	int		map_width;
+}	t_config;
 
 typedef struct s_tex
 {
-    void    *img;
-    char    *addr;
-    int     bpp;
-    int     line_len;
-    int     endian;
-    int     width;
-    int     height;
-}   t_tex;
+	void	*img;
+	char	*addr;
+	int	bpp;
+	int	line_len;
+	int	endian;
+	int	width;
+	int	height;
+}	t_tex;
 
 typedef struct s_data
 {
@@ -92,6 +152,21 @@ typedef struct s_rayctx
     int        wall_h;
     t_column   col;
 }   t_rayctx;
+
+int		ft_error(const char *msg);
+int		parse_cub_file(const char *path, t_config *cfg);
+int		parse_texture(char *line, char **dest);
+int		parse_color(char *line, int *r, int *g, int *b);
+int		handle_identifier(char *line, t_config *cfg);
+int		parse_map(int fd, t_config *cfg, char *first_line);
+int		validate_map(t_config *cfg);
+char	*ft_strdup(const char *s);
+char	*ft_strtrim(const char *s);
+int		ft_atoi_strict(const char *s, int *out);
+void	free_config(t_config *cfg);
+void	free_split(char **arr);
+int		ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
 
 int     init_game_struct(t_data *data);
 int     close_window(void *param);

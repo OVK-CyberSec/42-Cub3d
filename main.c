@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mohifdi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/10 16:56:59 by mohifdi           #+#    #+#             */
+/*   Updated: 2026/06/10 16:57:00 by mohifdi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub.h"
 
 void    set_angle(char **map, int y, int x, double *angle)
@@ -55,18 +67,21 @@ void    cub(char **map)
     mlx_loop(data.mlx);
 }
 
-int main()
+int main(int argc, char **argv)
 {
-    char **map;
+	t_config	cfg;
 
-    map = (char *[]){
-        "11111",
-        "10001",
-        "10001",
-        "10E01",
-        "11111",
-        NULL
-    };
-    cub(map);
+	if (argc != 2)
+	{
+		ft_error(ERR_USAGE);
+		return (1);
+	}
+	if (parse_cub_file(argv[1], &cfg))
+	{
+		free_config(&cfg);
+		return (1);
+	}
+
+    cub(cfg.map);
     return (0);
 }
